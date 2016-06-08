@@ -7,6 +7,8 @@ const head = `<!DOCTYPE html>
 <html>
 <head>
 <title>Kotilounas</title>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <style>
 * {font-size:14px; font-family: Arial;text-align:left !important;margin:0; padding:0;}
 table, tr, th, td {display:block !important;}
