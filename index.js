@@ -1,8 +1,5 @@
-const express = require('express')
 const http = require('http')
-const app = express()
 const port = process.env.PORT || 5000
-app.listen(port, () => console.log(`Started server in port ${port}`))
 const head = `<!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +15,8 @@ body {margin: 1em; color: #333;}
 </style>
 </head>
 <body>`
-app.get('/', function (req, res) {
+http.createServer((req, res) => {
+    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
     combineAsArray([
             'http://koskenranta.net/fi/ravintola/lounas/',
             'http://kahvitupa.net/index.php?p=1_3'
@@ -27,10 +25,10 @@ app.get('/', function (req, res) {
         <div class="title">Kahvitupa</div>${mapKahvitupa(bodies[1])}
         <div class="title">Koskenranta</div>${mapKoskenranta(bodies[0])}
         </body></html>`
-            res.send(body)
+            res.end(body)
         }
     )
-})
+}).listen(port)
 
 function mapKoskenranta(str) {
     return str.replace(/\n/g, '').match(/(LOUNAS vko.*)<img width="300" height="169"/)[1]
