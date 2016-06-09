@@ -1,5 +1,5 @@
 const express = require('express')
-const request = require('request')
+const http = require('http')
 const app = express()
 const port = process.env.PORT || 5000
 app.listen(port, () => console.log(`Started server in port ${port}`))
@@ -23,11 +23,11 @@ app.get('/', function (req, res) {
             'http://koskenranta.net/fi/ravintola/lounas/',
             'http://kahvitupa.net/index.php?p=1_3'
         ], bodies => {
-        const body = `${head}
+            const body = `${head}
         <div class="title">Kahvitupa</div>${mapKahvitupa(bodies[1])}
         <div class="title">Koskenranta</div>${mapKoskenranta(bodies[0])}
         </body></html>`
-        res.send(body)
+            res.send(body)
         }
     )
 })
@@ -43,8 +43,17 @@ function mapKahvitupa(str) {
 }
 function combineAsArray(urls, cb) {
     const bodies = []
-    urls.forEach((url, i) => request(url, (error, response, body) => {
+    urls.forEach((url, i) => get(url, body => {
         bodies[i] = body
         if (bodies.filter(x => x).length === urls.length) cb(bodies)
     }))
+}
+
+function get(url, cb) {
+    http.get(url, res => {
+        var chunks = []
+        res.setEncoding('utf8')
+        res.on('data', chunk => chunks.push(chunk))
+        res.on('end', () => cb(chunks.join('')))
+    })
 }
