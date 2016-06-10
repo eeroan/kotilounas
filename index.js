@@ -8,14 +8,14 @@ const head = `<!DOCTYPE html>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <style>
-body {font:14px Arial; margin: 1em; color: #333; line-height:1.3;}
+body {font:1em Arial; margin: 1em; color: #333; line-height:1.3;}
 h1, h2 {margin: 1em 0 .5em; font-weight: normal}
-h1 {font-size:7vw; }
-h2 {font-size:25px; }
+h1 {font-size:8vw; margin-top:0;}
+h2 {font-size:1.6em; }
 </style>
 </head>
 <body>
-<h1>Vanhankaupunginkosken lounaslistat</h1>`
+<h1>Vanhan&shy;kaupungin&shy;kosken lounaslistat</h1>`
 const startMsg = `Server started in http://localhost:${port}, took `
 console.time(startMsg)
 http.createServer((req, res) => {
