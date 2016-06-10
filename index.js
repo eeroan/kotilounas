@@ -10,7 +10,7 @@ const head = `<!DOCTYPE html>
 <style>
 body {font:1em Arial; margin: 0; color: #333; line-height:1.3;background: #F0FFF2}
 h1, h2 {margin: 0 0 .5em; font-weight: normal}
-h1 {font-size:8vw; margin: 20px 20px .5em;text-shadow: 0 1px 8px #666; color:#fff;}
+h1 {font:2em Impact; margin: 20px 20px .5em;text-shadow: 0 1px 8px #666; color:#fff;}
 h2 {font-size:1.6em; }
 section { box-shadow: 0px 1px 3px 0px #999; margin:20px; padding:1em; border-radius:3px;background:#fff;}
 </style>
