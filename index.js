@@ -10,7 +10,7 @@ const head = `<!DOCTYPE html>
 <style>
 body {font:14px Arial; margin: 1em; color: #333; line-height:1.3;}
 h1, h2 {margin: 1em 0 .5em; font-weight: normal}
-h1 {font-size:35px; }
+h1 {font-size:7vw; }
 h2 {font-size:25px; }
 </style>
 </head>
