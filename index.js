@@ -17,13 +17,13 @@ body {margin: 1em; color: #333;}
 <body>`
 http.createServer((req, res) => {
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
-    combineAsArray([
-            'http://koskenranta.net/fi/ravintola/lounas/',
-            'http://kahvitupa.net/index.php?p=1_3'
-        ], bodies => {
+    combineTemplate({
+            koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
+            kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
+        }, bodies => {
             const body = `${head}
-        <div class="title">Kahvitupa</div>${mapKahvitupa(bodies[1])}
-        <div class="title">Koskenranta</div>${mapKoskenranta(bodies[0])}
+        <div class="title">Kahvitupa</div>${mapKahvitupa(bodies.kahvitupa)}
+        <div class="title">Koskenranta</div>${mapKoskenranta(bodies.koskenranta)}
         </body></html>`
             res.end(body)
         }
@@ -39,14 +39,15 @@ function mapKahvitupa(str) {
         .match(/(<table style="width: 830px.*)<img src="images\/footer.jpg/)[1]
         .replace(/<p>&nbsp;<\/p>/g, '')
 }
-function combineAsArray(urls, cb) {
-    const bodies = []
-    urls.forEach((url, i) => get(url, body => {
-        bodies[i] = body
-        if (bodies.filter(x => x).length === urls.length) cb(bodies)
+
+function combineTemplate(urls, cb) {
+    var names = Object.keys(urls)
+    var results = {}
+    names.forEach(name => get(urls[name], body => {
+        results[name] = body
+        if(Object.keys(results).length === names.length) cb(results)
     }))
 }
-
 function get(url, cb) {
     http.get(url, res => {
         var chunks = []

@@ -1,13 +1,11 @@
 {
   "name": "kotilounas",
   "version": "1.0.0",
-  "description": "",
+  "description": "Vanhankaupunginkosken lounaat",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-  }
+  "author": "Eero Anttila",
+  "license": "ISC"
 }
