@@ -8,10 +8,11 @@ const head = `<!DOCTYPE html>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <style>
-body {font:1em Arial; margin: 1em; color: #333; line-height:1.3;}
-h1, h2 {margin: 1em 0 .5em; font-weight: normal}
-h1 {font-size:8vw; margin-top:0;}
+body {font:1em Arial; margin: 0; color: #333; line-height:1.3;background: #F0FFF2}
+h1, h2 {margin: 0 0 .5em; font-weight: normal}
+h1 {font-size:8vw; margin: 20px 20px .5em;text-shadow: 0 1px 8px #666; color:#fff;}
 h2 {font-size:1.6em; }
+section { box-shadow: 0px 1px 3px 0px #999; margin:20px; padding:1em; border-radius:3px;background:#fff;}
 </style>
 </head>
 <body>
@@ -27,8 +28,8 @@ http.createServer((req, res) => {
             kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
         }, bodies => {
             res.end(`${head}
-        <h2>Kahvitupa</h2>${mapKahvitupa(bodies.kahvitupa)}
-        <h2>Koskenranta</h2>${mapKoskenranta(bodies.koskenranta)}
+        <section><h2>Kahvitupa</h2>${mapKahvitupa(bodies.kahvitupa)}</section>
+        <section><h2>Koskenranta</h2>${mapKoskenranta(bodies.koskenranta)}</section>
         </body></html>`)
         })
     } else {
