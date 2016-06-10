@@ -16,6 +16,8 @@ body {margin: 1em; color: #333;}
 </style>
 </head>
 <body>`
+const startMsg = `Server started in http://localhost:${port}, took `
+console.time(startMsg)
 http.createServer((req, res) => {
     var uri = url.parse(req.url).pathname
     if(req.method === 'GET' && uri === '/') {
@@ -33,7 +35,7 @@ http.createServer((req, res) => {
         res.writeHead(404)
         res.end()
     }
-}).listen(port)
+}).listen(port, () => console.timeEnd(startMsg))
 
 function mapKoskenranta(str) {
     return str.replace(/\n/g, '').match(/(LOUNAS vko.*)<img width="300" height="169"/)[1]
