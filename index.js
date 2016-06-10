@@ -23,31 +23,27 @@ http.createServer((req, res) => {
     if(req.method === 'GET' && uri === '/') {
         res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
         combineTemplate({
-                koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
-                kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
-            }, bodies => {
-                res.end(`${head}
+            koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
+            kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
+        }, bodies => {
+            res.end(`${head}
         <div class="title">Kahvitupa</div>${mapKahvitupa(bodies.kahvitupa)}
         <div class="title">Koskenranta</div>${mapKoskenranta(bodies.koskenranta)}
         </body></html>`)
-            })
+        })
     } else {
         res.writeHead(404)
         res.end()
     }
 }).listen(port, () => console.timeEnd(startMsg))
 
-function mapKoskenranta(str) {
-    return str.replace(/\n/g, '').match(/(LOUNAS vko.*)<img width="300" height="169"/)[1]
-}
+const mapKoskenranta = str => str.replace(/\n/g, '').match(/(LOUNAS vko.*)<img width="300" height="169"/)[1]
 
-function mapKahvitupa(str) {
-    return str.replace(/[\n\r]+/g, '')
-        .match(/(<table style="width: 830px.*)<img src="images\/footer.jpg/)[1]
-        .replace(/<p>&nbsp;<\/p>/g, '')
-}
+const mapKahvitupa = str => str.replace(/[\n\r]+/g, '')
+    .match(/(<table style="width: 830px.*)<img src="images\/footer.jpg/)[1]
+    .replace(/<p>&nbsp;<\/p>/g, '')
 
-function combineTemplate(urls, cb) {
+const combineTemplate = (urls, cb) => {
     var names = Object.keys(urls)
     var results = {}
     names.forEach(name => get(urls[name], body => {
@@ -56,7 +52,7 @@ function combineTemplate(urls, cb) {
     }))
 }
 
-function get(url, cb) {
+const get = (url, cb) => {
     http.get(url, res => {
         var chunks = []
         res.setEncoding('utf8')
