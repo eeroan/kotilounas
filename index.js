@@ -1,4 +1,5 @@
 const http = require('http')
+const url = require('url')
 const port = process.env.PORT || 5000
 const head = `<!DOCTYPE html>
 <html>
@@ -16,18 +17,22 @@ body {margin: 1em; color: #333;}
 </head>
 <body>`
 http.createServer((req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
-    combineTemplate({
-            koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
-            kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
-        }, bodies => {
-            const body = `${head}
+    var uri = url.parse(req.url).pathname
+    if(req.method === 'GET' && uri === '/') {
+        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
+        combineTemplate({
+                koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
+                kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
+            }, bodies => {
+                res.end(`${head}
         <div class="title">Kahvitupa</div>${mapKahvitupa(bodies.kahvitupa)}
         <div class="title">Koskenranta</div>${mapKoskenranta(bodies.koskenranta)}
-        </body></html>`
-            res.end(body)
-        }
-    )
+        </body></html>`)
+            })
+    } else {
+        res.writeHead(404)
+        res.end()
+    }
 }).listen(port)
 
 function mapKoskenranta(str) {
@@ -48,6 +53,7 @@ function combineTemplate(urls, cb) {
         if(Object.keys(results).length === names.length) cb(results)
     }))
 }
+
 function get(url, cb) {
     http.get(url, res => {
         var chunks = []
