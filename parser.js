@@ -2,7 +2,7 @@ const mapKoskenranta = (str, currentDate) => separateWeekDays(stripTags(str.repl
 
 const mapKahvitupa = str => stripTags(str.replace(/[\n\r]+/g, '')
     .match(/(<table style="width: 830px.*)<img src="images\/footer.jpg/)[1]
-    .replace(/<p>&nbsp;<\/p>/g, '')).join('<br>')
+    .replace(/<p>&nbsp;<\/p>/g, '')).join('<br>\n')
 
 module.exports = {
     mapKoskenranta,
@@ -17,7 +17,7 @@ const separateWeekDays = (strs, currentDate)=> strs.map(x=>
     .map(x=>x.split('KEY_SEPARATOR'))
     .map(x => ({date:strToDate(x[0]), markup: x[1]}))
     .filter(({date}) => date >= toMidnight(currentDate))
-    .map(x=>x.markup).join('')
+    .map(x=>x.markup).join('').replace(/<br>/g, '<br>\n')
 const stripTags = str => str.replace(/<[^>]+>/g, 'DIVIDER').split('DIVIDER')
     .map(x => x.replace(/&nbsp;/g, '')).filter(x=>x.trim().length)
 
