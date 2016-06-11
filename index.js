@@ -35,7 +35,7 @@ const writePage = res => {
     }, ({kahvitupa, koskenranta}) => {
         res.end(`${head}
         <section><h2>Kahvitupa</h2>${mapKahvitupa(kahvitupa)}</section>
-        <section><h2>Koskenranta</h2>${mapKoskenranta(koskenranta)}</section>
+        <section><h2>Koskenranta</h2>${mapKoskenranta(koskenranta, new Date())}</section>
         ${gaCode}
         </body></html>`)
     })
