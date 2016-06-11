@@ -4,6 +4,7 @@ const fs = require('fs')
 const {mapKahvitupa, mapKoskenranta} = require('./parser')
 const port = process.env.PORT || 5000
 const startMsg = '\033[33mServer started in \033[36mhttp://localhost:' + port + ', \033[33mtook \033[39m'
+const startedTime =  new Date().toString()
 console.time(startMsg)
 
 http.createServer((req, res) => {
@@ -68,6 +69,7 @@ const get = (url, cb) => http.get(url, res => {
 })
 const head = `<html>
 <head>
+<!-- Server started: ${startedTime}-->
 <title>Kotilounas</title>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
