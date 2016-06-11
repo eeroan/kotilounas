@@ -14,7 +14,7 @@ equal('Kahvitupa result is correct',
     readFile('expectedKahvitupa.txt')
 )
 equal('Koskenranta result is correct',
-    mapKoskenranta(readFile('koskenranta.html'), new Date(2016,5,1)),
+    mapKoskenranta(readFile('koskenranta.html'), new Date(2016,6,15)),
     readFile('expectedKoskenranta.txt')
 )
 console.log('\033[32mAll tests passed!\033[39m');
