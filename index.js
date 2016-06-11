@@ -1,6 +1,6 @@
 const http = require('http')
 const url = require('url')
-const parser = require('./parser')
+const {mapKahvitupa, mapKoskenranta} = require('./parser')
 const port = process.env.PORT || 5000
 const head = `<!DOCTYPE html>
 <html>
@@ -39,8 +39,8 @@ http.createServer((req, res) => {
             kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
         }, ({kahvitupa, koskenranta}) => {
             res.end(`${head}
-        <section><h2>Kahvitupa</h2>${parser.mapKahvitupa(kahvitupa)}</section>
-        <section><h2>Koskenranta</h2>${parser.mapKoskenranta(koskenranta)}</section>
+        <section><h2>Kahvitupa</h2>${mapKahvitupa(kahvitupa)}</section>
+        <section><h2>Koskenranta</h2>${mapKoskenranta(koskenranta)}</section>
         ${gaCode}
         </body></html>`)
         })
