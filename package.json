@@ -8,5 +8,9 @@
     "test": "node test/test.js"
   },
   "author": "Eero Anttila",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "6.2.1",
+    "npm": "3.9.5"
+  }
 }
