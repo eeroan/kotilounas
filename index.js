@@ -37,10 +37,10 @@ http.createServer((req, res) => {
         combineTemplate({
             koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
             kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
-        }, bodies => {
+        }, ({kahvitupa, koskenranta}) => {
             res.end(`${head}
-        <section><h2>Kahvitupa</h2>${parser.mapKahvitupa(bodies.kahvitupa)}</section>
-        <section><h2>Koskenranta</h2>${parser.mapKoskenranta(bodies.koskenranta)}</section>
+        <section><h2>Kahvitupa</h2>${parser.mapKahvitupa(kahvitupa)}</section>
+        <section><h2>Koskenranta</h2>${parser.mapKoskenranta(koskenranta)}</section>
         ${gaCode}
         </body></html>`)
         })
