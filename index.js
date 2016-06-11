@@ -21,7 +21,12 @@ http.createServer((req, res) => {
         })
     } else if(req.method === 'GET' && uri === '/menu.png') {
         const img = fs.readFileSync('menu.png', 'binary')
-        res.writeHead(200, {'Content-Type': 'image/png'})
+        res.writeHead(200)
+        res.write(img, 'binary')
+        res.end()
+    } else if(req.method === 'GET' && uri === '/favicon.ico') {
+        const img = fs.readFileSync('favicon.ico', 'binary')
+        res.writeHead(200)
         res.write(img, 'binary')
         res.end()
     } else {
@@ -53,6 +58,7 @@ const head = `<!DOCTYPE html>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link rel="apple-touch-icon" href="menu.png"/>
+<link id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon"/>
 <style>
 @import url(https://fonts.googleapis.com/css?family=Oswald|Droid+Sans);
 body {font:1em 'Droid Sans', sans-serif; margin: 0; color: #333; line-height:1.3;background: #F0FFF2}
