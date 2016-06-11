@@ -18,7 +18,7 @@ section { box-shadow: 0px 1px 3px 0px #999; margin:20px; padding:1em; border-rad
 </head>
 <body>
 <h1>Vanhan&shy;kaupungin&shy;kosken lounaslistat</h1>`
-const startMsg = `Server started in http://localhost:${port}, took `
+const startMsg = '\033[33mServer started in \033[36mhttp://localhost:'+ port+', \033[33mtook \033[39m'
 const gaCode = `<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
