@@ -5,36 +5,52 @@ const {mapKahvitupa, mapKoskenranta} = require('./parser')
 const port = process.env.PORT || 5000
 const startMsg = '\033[33mServer started in \033[36mhttp://localhost:' + port + ', \033[33mtook \033[39m'
 console.time(startMsg)
+
 http.createServer((req, res) => {
     const uri = url.parse(req.url).pathname
-    if(req.method === 'GET' && uri === '/') {
-        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
-        combineTemplate({
-            koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
-            kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
-        }, ({kahvitupa, koskenranta}) => {
-            res.end(`${head}
+    if(req.method === 'GET') {
+        switch (uri) {
+            case  '/':
+                writePage(res)
+                break
+            case '/menu.png':
+                serveImg('menu.png', res)
+                break
+            case '/favicon.ico':
+                serveImg('favicon.ico', res)
+                break
+            default:
+                notFound(res)
+        }
+    } else {
+        notFound(res)
+    }
+}).listen(port, () => console.timeEnd(startMsg))
+
+const writePage = res => {
+    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
+    combineTemplate({
+        koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
+        kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
+    }, ({kahvitupa, koskenranta}) => {
+        res.end(`${head}
         <section><h2>Kahvitupa</h2>${mapKahvitupa(kahvitupa)}</section>
         <section><h2>Koskenranta</h2>${mapKoskenranta(koskenranta)}</section>
         ${gaCode}
         </body></html>`)
-        })
-    } else if(req.method === 'GET' && uri === '/menu.png') {
-        const img = fs.readFileSync('menu.png', 'binary')
-        res.writeHead(200)
-        res.write(img, 'binary')
-        res.end()
-    } else if(req.method === 'GET' && uri === '/favicon.ico') {
-        const img = fs.readFileSync('favicon.ico', 'binary')
-        res.writeHead(200)
-        res.write(img, 'binary')
-        res.end()
-    } else {
-        res.writeHead(404)
-        res.end()
-    }
-}).listen(port, () => console.timeEnd(startMsg))
+    })
+}
 
+const serveImg = (path, res) => {
+    const img = fs.readFileSync(path, 'binary')
+    res.writeHead(200)
+    res.write(img, 'binary')
+    res.end()
+}
+const notFound = res => {
+    res.writeHead(404)
+    res.end()
+}
 const combineTemplate = (urls, cb) => {
     const names = Object.keys(urls)
     const results = {}
@@ -43,14 +59,12 @@ const combineTemplate = (urls, cb) => {
         if(Object.keys(results).length === names.length) cb(results)
     }))
 }
-
 const get = (url, cb) => http.get(url, res => {
     const chunks = []
     res.setEncoding('utf8')
     res.on('data', chunk => chunks.push(chunk))
     res.on('end', () => cb(chunks.join('')))
 })
-
 const head = `<!DOCTYPE html>
 <html>
 <head>
