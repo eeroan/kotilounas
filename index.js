@@ -33,6 +33,7 @@ const writePage = res => {
         koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
         kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
     }, ({kahvitupa, koskenranta}) => {
+        res.write('<!DOCTYPE html>')
         res.end(`${head}
         <section><h2>Kahvitupa</h2>${mapKahvitupa(kahvitupa)}</section>
         <section><h2>Koskenranta</h2>${mapKoskenranta(koskenranta, new Date())}</section>
@@ -65,8 +66,7 @@ const get = (url, cb) => http.get(url, res => {
     res.on('data', chunk => chunks.push(chunk))
     res.on('end', () => cb(chunks.join('')))
 })
-const head = `<!DOCTYPE html>
-<html>
+const head = `<html>
 <head>
 <title>Kotilounas</title>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
