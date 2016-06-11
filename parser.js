@@ -11,16 +11,13 @@ module.exports = {
 const weekdays = ['maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai'].map(x=>x.toUpperCase())
 const matchWeekday = new RegExp(`(${weekdays.join('|')})`, 'g')
 const separateWeekDays = (strs, currentDate)=> {
-    const days = []
-    strs.forEach(line => {
-        if(line.match(matchWeekday)) {
-            const split = line.split(' ')
-            days.push({date: strToDate(split[0]), markup: [`<br><strong>${line}</strong>`]})
-        } else if(days.length){
-            days[days.length-1].markup.push(line)
-        }
-    })
-    return days
+    return strs.reduce((days, line) => {
+        if(line.match(matchWeekday))
+            days.push({date: strToDate(line.split(' ')[0]), markup: [`<br><strong>${line}</strong>`]})
+        else if(days.length)
+            days[days.length - 1].markup.push(line)
+        return days
+    }, [])
         .filter(({date}) => date >= toMidnight(currentDate))
         .map(({markup}) => markup.join('<br>\n'))
         .join('<br>\n')
