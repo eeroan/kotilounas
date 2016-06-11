@@ -1,5 +1,6 @@
 const http = require('http')
 const url = require('url')
+const fs = require('fs')
 const {mapKahvitupa, mapKoskenranta} = require('./parser')
 const port = process.env.PORT || 5000
 const startMsg = '\033[33mServer started in \033[36mhttp://localhost:' + port + ', \033[33mtook \033[39m'
@@ -18,6 +19,11 @@ http.createServer((req, res) => {
         ${gaCode}
         </body></html>`)
         })
+    } else if(req.method === 'GET' && uri === '/menu.png') {
+        const img = fs.readFileSync('menu.png', 'binary')
+        res.writeHead(200, {'Content-Type': 'image/png'})
+        res.write(img, 'binary')
+        res.end()
     } else {
         res.writeHead(404)
         res.end()
@@ -46,6 +52,7 @@ const head = `<!DOCTYPE html>
 <title>Kotilounas</title>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="apple-touch-icon" href="menu.png"/>
 <style>
 @import url(https://fonts.googleapis.com/css?family=Oswald|Droid+Sans);
 body {font:1em 'Droid Sans', sans-serif; margin: 0; color: #333; line-height:1.3;background: #F0FFF2}
