@@ -1,5 +1,6 @@
 const http = require('http')
 const url = require('url')
+const parser = require('./parser')
 const port = process.env.PORT || 5000
 const head = `<!DOCTYPE html>
 <html>
@@ -38,8 +39,8 @@ http.createServer((req, res) => {
             kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
         }, bodies => {
             res.end(`${head}
-        <section><h2>Kahvitupa</h2>${mapKahvitupa(bodies.kahvitupa)}</section>
-        <section><h2>Koskenranta</h2>${mapKoskenranta(bodies.koskenranta)}</section>
+        <section><h2>Kahvitupa</h2>${parser.mapKahvitupa(bodies.kahvitupa)}</section>
+        <section><h2>Koskenranta</h2>${parser.mapKoskenranta(bodies.koskenranta)}</section>
         ${gaCode}
         </body></html>`)
         })
@@ -48,17 +49,6 @@ http.createServer((req, res) => {
         res.end()
     }
 }).listen(port, () => console.timeEnd(startMsg))
-
-const weekdays = ['maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai'].map(x=>x.toUpperCase())
-const separateWeekDays = strs => strs.map(x=> x.match(new RegExp(`(${weekdays.join('|')})`, 'g')) ? `<br><strong>${x}</strong>` : x).join('<br>')
-const stripTags = str => str.replace(/<[^>]+>/g, 'DIVIDER').split('DIVIDER')
-    .map(x => x.replace(/&nbsp;/g, '')).filter(x=>x.trim().length)
-
-const mapKoskenranta = str => separateWeekDays(stripTags(str.replace(/[\n|\t]/g, '').match(/(LOUNAS vko.*)<img width="300" height="169"/)[1]))
-
-const mapKahvitupa = str => stripTags(str.replace(/[\n\r]+/g, '')
-    .match(/(<table style="width: 830px.*)<img src="images\/footer.jpg/)[1]
-    .replace(/<p>&nbsp;<\/p>/g, '')).join('<br>')
 
 const combineTemplate = (urls, cb) => {
     var names = Object.keys(urls)
