@@ -56,10 +56,22 @@ const notFound = res => {
 const combineTemplate = (urls, cb) => {
     const names = Object.keys(urls)
     const results = {}
-    names.forEach(name => get(urls[name], body => {
+    names.forEach(name => getCached(urls[name], body => {
         results[name] = body
         if(Object.keys(results).length === names.length) cb(results)
     }))
+}
+
+var responses = {}
+const getCached = (url, cb) => {
+    if(url in responses) {
+        cb(responses[url])
+    } else {
+        get(url, data => {
+            responses[url] = data
+            cb(data)
+        })
+    }
 }
 const get = (url, cb) => http.get(url, res => {
     const chunks = []
