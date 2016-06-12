@@ -102,17 +102,7 @@ const head = `<html>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link rel="apple-touch-icon" href="menu.png"/>
 <link id="page_favicon" href="/favicon.ico" rel="icon" type="image/x-icon"/>
-<style>
-@import url(https://fonts.googleapis.com/css?family=Oswald|Droid+Sans);
-body {font:1em 'Droid Sans', sans-serif; margin: 0; color: #333; line-height:1.3;background: #F0FFF2}
-h1, h2 {margin: 0 0 .5em; font-weight: normal}
-h1 {font:2em 'Oswald', sans-serif; margin: 20px 20px .5em;text-shadow: 0 1px 6px #444; color:#fff;}
-h2 {font-size: 1.2em; background:#fff;margin:-20px -20px 20px;padding:10px 20px 10px;color:#3C7143;text-transform:uppercase;border-bottom: 1px solid #ccc;display:flex; justify-content: space-between;}
-a {text-decoration: none;}
-.subtitle {margin-left: 20px;}
-section { box-shadow: 0px 1px 3px 0px #999; margin:20px; padding:20px; border-radius:3px;background:#fff;}
-section br:first-of-type {display: none;}
-</style>
+<link rel="stylesheet" type="text/css" href="public/styles.css"/>
 </head>
 <body>
 <h1>Vanhan&shy;kaupungin&shy;kosken lounaslistat</h1>
