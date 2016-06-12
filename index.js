@@ -95,7 +95,7 @@ const head = `<html>
 @import url(https://fonts.googleapis.com/css?family=Oswald|Droid+Sans);
 body {font:1em 'Droid Sans', sans-serif; margin: 0; color: #333; line-height:1.3;background: #F0FFF2}
 h1, h2 {margin: 0 0 .5em; font-weight: normal}
-h1 {font:2em 'Oswald', sans-serif; margin: 20px 20px .5em;text-shadow: 0 1px 6px #666; color:#fff;}
+h1 {font:2em 'Oswald', sans-serif; margin: 20px 20px .5em;text-shadow: 0 1px 6px #444; color:#fff;}
 h2 {font-size: 1.2em; background:#fff;margin:-20px -20px 20px;padding:10px 20px 10px;color:#3C7143;text-transform:uppercase;border-bottom: 1px solid #ccc;display:flex; justify-content: space-between;}
 a {text-decoration: none;}
 .subtitle {margin-left: 20px;}
