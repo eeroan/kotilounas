@@ -1,7 +1,7 @@
 const http = require('http')
 const url = require('url')
 const fs = require('fs')
-const {mapKahvitupa, mapKoskenranta} = require('./parser')
+const {mapKahvitupa, mapKoskenranta, formatToday} = require('./parser')
 const port = process.env.PORT || 5000
 const startMsg = '\033[33mServer started in \033[36mhttp://localhost:' + port + ', \033[33mtook \033[39m'
 const startedTime =  new Date().toString()
@@ -82,6 +82,7 @@ const get = (url, cb) => http.get(url, res => {
     res.on('data', chunk => chunks.push(chunk))
     res.on('end', () => cb(chunks.join('')))
 })
+
 const head = `<html>
 <head>
 <!-- Server started: ${startedTime}-->
@@ -97,12 +98,14 @@ h1, h2 {margin: 0 0 .5em; font-weight: normal}
 h1 {font:2em 'Oswald', sans-serif; margin: 20px 20px .5em;text-shadow: 0 1px 6px #666; color:#fff;}
 h2 {font-size: 1.2em; background:#fff;margin:-20px -20px 20px;padding:10px 20px 10px;color:#3C7143;text-transform:uppercase;border-bottom: 1px solid #ccc;display:flex; justify-content: space-between;}
 a {text-decoration: none;}
+.subtitle {margin-left: 20px;}
 section { box-shadow: 0px 1px 3px 0px #999; margin:20px; padding:20px; border-radius:3px;background:#fff;}
 section br:first-of-type {display: none;}
 </style>
 </head>
 <body>
-<h1>Vanhan&shy;kaupungin&shy;kosken lounaslistat</h1>`
+<h1>Vanhan&shy;kaupungin&shy;kosken lounaslistat</h1>
+<p class="subtitle">Tänään on ${formatToday()}.</p>`
 
 const gaCode = `<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

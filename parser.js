@@ -4,11 +4,16 @@ const mapKahvitupa = str => stripTags(str.replace(/[\n\r]+/g, '')
     .match(/(<table style="width: 830px.*)<img src="images\/footer.jpg/)[1]
     .replace(/<p>&nbsp;<\/p>/g, '')).join('<br>\n')
 
+const formatToday = () => {
+    var today = new Date()
+    return `${weekdays[today.getDay()]} ${today.getDate()}.${today.getMonth()+1}`
+}
 module.exports = {
     mapKoskenranta,
-    mapKahvitupa
+    mapKahvitupa,
+    formatToday
 }
-const weekdays = ['maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai'].map(x=>x.toUpperCase())
+const weekdays = ['sunnuntai', 'maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai'].map(x=>x.toUpperCase())
 const matchWeekday = new RegExp(`(${weekdays.join('|')})`, 'g')
 const separateWeekDays = (strs, currentDate)=> {
     return strs.reduce((days, line) => {
