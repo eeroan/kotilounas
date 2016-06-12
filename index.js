@@ -30,13 +30,14 @@ http.createServer((req, res) => {
 
 const writePage = res => {
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
+    res.write('<!DOCTYPE html>')
+    res.write(head)
+    
     combineTemplate({
         koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
         kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
     }, ({kahvitupa, koskenranta}) => {
-        res.write('<!DOCTYPE html>')
-        res.end(`${head}
-        <section><h2>Kahvitupa</h2>${mapKahvitupa(kahvitupa)}</section>
+        res.end(`<section><h2>Kahvitupa</h2>${mapKahvitupa(kahvitupa)}</section>
         <section><h2>Koskenranta</h2>${mapKoskenranta(koskenranta, new Date())}</section>
         ${gaCode}
         </body></html>`)
