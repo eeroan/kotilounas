@@ -32,13 +32,15 @@ const writePage = res => {
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
     res.write('<!DOCTYPE html>')
     res.write(head)
-    
+
+    const koskenrantaUrl = 'http://koskenranta.net/fi/ravintola/lounas/'
+    const kahvitupaUrl = 'http://kahvitupa.net/index.php?p=1_3'
     combineTemplate({
-        koskenranta: 'http://koskenranta.net/fi/ravintola/lounas/',
-        kahvitupa:   'http://kahvitupa.net/index.php?p=1_3'
+        koskenranta: koskenrantaUrl,
+        kahvitupa:   kahvitupaUrl
     }, ({kahvitupa, koskenranta}) => {
-        res.end(`<section><h2>Kahvitupa</h2>${mapKahvitupa(kahvitupa)}</section>
-        <section><h2>Koskenranta</h2>${mapKoskenranta(koskenranta, new Date())}</section>
+        res.end(`<section><h2><span>Kahvitupa</span><a target="_blank" href="${kahvitupaUrl}">&#128279;</a></h2>${mapKahvitupa(kahvitupa)}</section>
+        <section><h2><span>Koskenranta</span><a target="_blank" href="${koskenrantaUrl}">&#128279;</a></h2>${mapKoskenranta(koskenranta, new Date())}</section>
         ${gaCode}
         </body></html>`)
     })
@@ -93,8 +95,10 @@ const head = `<html>
 body {font:1em 'Droid Sans', sans-serif; margin: 0; color: #333; line-height:1.3;background: #F0FFF2}
 h1, h2 {margin: 0 0 .5em; font-weight: normal}
 h1 {font:2em 'Oswald', sans-serif; margin: 20px 20px .5em;text-shadow: 0 1px 6px #666; color:#fff;}
-h2 {font-size: 1.2em; background:#ccc; text-shadow: 0 1px 6px #666;margin:-20px -20px 20px;padding:10px 20px 10px;color:#fff;text-transform:uppercase;}
+h2 {font-size: 1.2em; background:#fff;margin:-20px -20px 20px;padding:10px 20px 10px;color:#3C7143;text-transform:uppercase;border-bottom: 1px solid #ccc;display:flex; justify-content: space-between;}
+a {text-decoration: none;}
 section { box-shadow: 0px 1px 3px 0px #999; margin:20px; padding:20px; border-radius:3px;background:#fff;}
+section br:first-of-type {display: none;}
 </style>
 </head>
 <body>
