@@ -53,7 +53,9 @@ const writePage = res => {
         res.end(`<section><h2><span>Kahvitupa</span><a target="_blank" href="${kahvitupaUrl}">&#128279;</a></h2>${mapKahvitupa(kahvitupa)}</section>
         <section><h2><span>Koskenranta</span><a target="_blank" href="${koskenrantaUrl}">&#128279;</a></h2>${mapKoskenranta(koskenranta, new Date())}</section>
         ${gaCode}
-        </body></html>`)
+        <p class="subtitle">
+        <i><a href="https://github.com/eeroan/kotilounas">Lähdekoodi</a></i>
+        </p></body></html>`)
     })
 }
 
