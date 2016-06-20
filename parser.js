@@ -1,5 +1,5 @@
 const mapKoskenranta = (str, currentDate) => {
-    const match = str.replace(/[\n|\t]/g, '').match(/(LOUNAS vko.*)<img width="300" height="169"/)
+    const match = str.replace(/[\n|\t]/g, '').match(/(LOUNASMENU VKO.*)<img width="2480" height="705/)
     return match ? separateWeekDays(stripTags(match[1]), currentDate)  : 'Ei tietoja'
 }
 const mapKahvitupa = str => stripTags(str.replace(/[\n\r]+/g, '')
