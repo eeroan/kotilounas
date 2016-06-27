@@ -21,13 +21,14 @@ const separateWeekDays = (strs, currentDate)=> {
     const currentMidnight = toMidnight(currentDate)
     return strs.reduce((days, line) => {
         if(line.match(matchWeekday))
-            days.push({date: strToDate(line.split(' ')[0]), markup: [`<br><strong>${line}</strong>`]})
+            days.push({date: strToDate(line.split(/\s+/)[0]), markup: [`<br><strong>${line}</strong>`]})
         else if(days.length)
             days[days.length - 1].markup.push(line)
         return days
     }, [])
         .filter(({date}) => date >= currentMidnight)
-        .map(({markup}) => markup.join('<br>\n'))
+        .sort((a,b) => a.date > b.date)
+        .map(({date, markup}) => markup.join('<br>\n')+' JA '+date)
         .join('<br>\n')
 }
 const stripTags = str => str.replace(/<[^>]+>/g, 'DIVIDER').split('DIVIDER')
