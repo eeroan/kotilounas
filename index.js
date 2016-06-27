@@ -59,12 +59,6 @@ const writePage = res => {
     })
 }
 
-const serveImg = (path, res) => {
-    const img = fs.readFileSync(path, 'binary')
-    res.writeHead(200)
-    res.write(img, 'binary')
-    res.end()
-}
 const notFound = res => {
     res.writeHead(404)
     res.end()
