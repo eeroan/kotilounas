@@ -12,17 +12,13 @@ http.createServer((req, res) => {
     const uri = url.parse(req.url).pathname
     if(req.method === 'GET') {
         // need to use path.normalize so people can't access directories underneath baseDirectory
-
         switch (uri) {
             case  '/':
                 writePage(res)
                 break
             default:
-                if(uri.startsWith('/public')) {
-                    serveStatic(uri, res)
-                } else {
-                    notFound(res)
-                }
+                if(uri.startsWith('/public')) serveStatic(uri, res) 
+                else notFound(res)
         }
     } else {
         notFound(res)
@@ -34,7 +30,7 @@ const serveStatic = (uri, res) => {
     res.writeHead(200)
     var fileStream = fs.createReadStream(fsPath)
     fileStream.pipe(res)
-    fileStream.on('error', function (e) {
+    fileStream.on('error', () => {
         res.writeHead(404)
         res.end()
     })
@@ -74,14 +70,11 @@ const combineTemplate = (urls, cb) => {
 
 var responses = {}
 const getCached = (url, cb) => {
-    if(url in responses) {
-        cb(responses[url])
-    } else {
-        get(url, data => {
-            responses[url] = data
-            cb(data)
-        })
-    }
+    if(url in responses) cb(responses[url]) 
+    else get(url, data => {
+        responses[url] = data
+        cb(data)
+    })
 }
 const get = (url, cb) => http.get(url, res => {
     const chunks = []
@@ -112,5 +105,4 @@ const gaCode = `<script>
 
   ga('create', 'UA-4154602-9', 'auto');
   ga('send', 'pageview');
-
 </script>`
