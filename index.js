@@ -2,7 +2,7 @@ const http = require('http')
 const url = require('url')
 const fs = require('fs')
 const path = require('path')
-const {mapKahvitupa, mapKoskenranta, formatToday} = require('./parser')
+const parser = require('./parser')
 const port = process.env.PORT || 5000
 const startMsg = '\033[33mServer started in \033[36mhttp://localhost:' + port + ', \033[33mtook \033[39m'
 const startedTime = new Date().toString()
@@ -50,8 +50,8 @@ const writePage = res => {
         koskenranta: koskenrantaUrl,
         kahvitupa:   kahvitupaUrl
     }, ({kahvitupa, koskenranta}) => {
-        res.end(`<section><h2><span>Kahvitupa</span><a target="_blank" href="${kahvitupaUrl}">&#128279;</a></h2>${mapKahvitupa(kahvitupa)}</section>
-        <section><h2><span>Koskenranta</span><a target="_blank" href="${koskenrantaUrl}">&#128279;</a></h2>${mapKoskenranta(koskenranta, new Date())}</section>
+        res.end(`<section><h2><span>Kahvitupa</span><a target="_blank" href="${kahvitupaUrl}">&#128279;</a></h2>${parser.mapKahvitupa(kahvitupa)}</section>
+        <section><h2><span>Koskenranta</span><a target="_blank" href="${koskenrantaUrl}">&#128279;</a></h2>${parser.mapKoskenranta(koskenranta, new Date())}</section>
         ${gaCode}
         <p class="subtitle">
         <i><a href="https://github.com/eeroan/kotilounas">Lähdekoodi</a></i>
@@ -102,7 +102,7 @@ const head = `<html>
 </head>
 <body>
 <h1>Vanhan&shy;kaupungin&shy;kosken lounaslistat</h1>
-<p class="subtitle">Tänään on ${formatToday()}.</p>`
+<p class="subtitle">Tänään on ${parser.formatToday()}.</p>`
 
 const gaCode = `<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
