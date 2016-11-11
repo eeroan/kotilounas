@@ -30,6 +30,7 @@ const serveStatic = (uri, res) => {
         res.end()
     })
 }
+const section = (title, url, body) => `<section><h2><span>${title}</span><a target="_blank" href="${url}">&#128279;</a></h2>${body}</section>`
 const writePage = res => {
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
     res.write('<!DOCTYPE html>')
@@ -38,8 +39,8 @@ const writePage = res => {
         koskenranta: koskenrantaUrl,
         kahvitupa:   kahvitupaUrl
     }, ({kahvitupa, koskenranta}) => {
-        res.end(`<section><h2><span>Kahvitupa</span><a target="_blank" href="${kahvitupaUrl}">&#128279;</a></h2>${parser.mapKahvitupa(kahvitupa)}</section>
-        <section><h2><span>Koskenranta</span><a target="_blank" href="${koskenrantaUrl}">&#128279;</a></h2>${parser.mapKoskenranta(koskenranta, new Date())}</section>
+        res.end(`${section('Kahvitupa', kahvitupaUrl, parser.mapKahvitupa(kahvitupa))}
+        ${section('Koskenranta', koskenrantaUrl, parser.mapKoskenranta(koskenranta, new Date()))}
         ${gaCode}
         <p class="subtitle">
         <i><a href="https://github.com/eeroan/kotilounas">Lähdekoodi</a></i>
