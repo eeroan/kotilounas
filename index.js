@@ -6,27 +6,22 @@ const parser = require('./parser')
 const port = process.env.PORT || 5000
 const startMsg = '\033[33mServer started in \033[36mhttp://localhost:' + port + ', \033[33mtook \033[39m'
 const startedTime = new Date().toString()
+const koskenrantaUrl = 'http://koskenranta.net/fi/ravintola/lounas/'
+const kahvitupaUrl = 'http://kahvitupa.net/index.php?p=1_3'
 console.time(startMsg)
-const baseDirectory = __dirname
 http.createServer((req, res) => {
     const uri = url.parse(req.url).pathname
-    if(req.method === 'GET') {
-        // need to use path.normalize so people can't access directories underneath baseDirectory
-        switch (uri) {
-            case  '/':
-                writePage(res)
-                break
-            default:
-                if(uri.startsWith('/public')) serveStatic(uri, res) 
-                else notFound(res)
-        }
-    } else {
+    const isGet = req.method === 'GET'
+    if(isGet && uri === '/')
+        writePage(res)
+    else if(isGet && uri.startsWith('/public'))
+        serveStatic(uri, res)
+    else
         notFound(res)
-    }
 }).listen(port, () => console.timeEnd(startMsg))
 
 const serveStatic = (uri, res) => {
-    var fsPath = baseDirectory + path.normalize(uri)
+    var fsPath = __dirname + path.normalize(uri)
     res.writeHead(200)
     var fileStream = fs.createReadStream(fsPath)
     fileStream.pipe(res)
@@ -39,9 +34,6 @@ const writePage = res => {
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
     res.write('<!DOCTYPE html>')
     res.write(head)
-
-    const koskenrantaUrl = 'http://koskenranta.net/fi/ravintola/lounas/'
-    const kahvitupaUrl = 'http://kahvitupa.net/index.php?p=1_3'
     combineTemplate({
         koskenranta: koskenrantaUrl,
         kahvitupa:   kahvitupaUrl
