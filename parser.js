@@ -28,7 +28,7 @@ const separateWeekDays = (strs, currentDate)=> {
     }, [])
         .filter(({date}) => date >= currentMidnight)
         .sort((a,b) => a.date > b.date)
-        .map(({date, markup}) => markup.join('<br>\n')+' JA '+date)
+        .map(({date, markup}) => markup.join('<br>\n'))
         .join('<br>\n')
 }
 const stripTags = str => str.replace(/<[^>]+>/g, 'DIVIDER').split('DIVIDER')
