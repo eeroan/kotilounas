@@ -43,9 +43,11 @@ const writePage = res => {
         kahvitupa:   kahvitupaUrl,
         dylanArabia: dylanArabiaApiUrl
     }, ({kahvitupa, koskenranta, dylanArabia}) => {
-        res.end(`${section('Kahvitupa', kahvitupaUrl, parser.mapKahvitupa(kahvitupa))}
+        res.end(`<article>
+        ${section('Kahvitupa', kahvitupaUrl, parser.mapKahvitupa(kahvitupa))}
         ${section('Koskenranta', koskenrantaUrl, parser.mapKoskenranta(koskenranta, new Date()))}
         ${section('Dylan Arabia', dylanArabiaUrl, parser.mapDylanArabia(dylanArabia, new Date()))}
+        </article>
         ${gaCode}
         <p class="subtitle">
         <i><a href="https://github.com/eeroan/kotilounas">Lähdekoodi</a></i>
