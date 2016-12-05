@@ -9,7 +9,7 @@ const startMsg = '\033[33mServer started in \033[36mhttp://localhost:' + port + 
 const startedTime = new Date().toString()
 const koskenrantaUrl = 'http://koskenranta.net/fi/ravintola/lounas/'
 const kahvitupaUrl = 'http://kahvitupa.net/index.php?p=1_3'
-const dylanArabiaApiUrl = 'https://graph.facebook.com/v2.8/DylanArabia/posts?access_token=' + process.env.FACEBOOK_API_TOKEN
+const dylanArabiaApiUrl = 'https://graph.facebook.com/v2.8/DylanArabia/posts?limit=1&access_token=' + process.env.FACEBOOK_API_TOKEN
 const dylanArabiaUrl = 'https://www.facebook.com/DylanArabia'
 console.time(startMsg)
 http.createServer((req, res) => {
