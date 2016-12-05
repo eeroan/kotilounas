@@ -1,6 +1,6 @@
 const mapKoskenranta = (str, currentDate) => {
     const match = str.replace(/[\n|\t]/g, '').match(/(LOUNASMENU VKO.*)<img width="2480" height="705/)
-    return match ? separateWeekDays(stripTags(match[1]), currentDate)  : 'Ei tietoja'
+    return match ? separateWeekDays(stripTags(match[1]), currentDate) : 'Ei tietoja'
 }
 const mapKahvitupa = str => stripTags(str.replace(/[\n\r]+/g, '')
     .match(/(<table style="width: 830px.*)<img src="images\/footer.jpg/)[1]
@@ -8,11 +8,16 @@ const mapKahvitupa = str => stripTags(str.replace(/[\n\r]+/g, '')
 
 const formatToday = () => {
     const today = new Date()
-    return `${weekdays[today.getDay()]} ${today.getDate()}.${today.getMonth()+1}`
+    return `${weekdays[today.getDay()]} ${today.getDate()}.${today.getMonth() + 1}`
 }
 
 const mapDylanArabia = json => {
-    return JSON.parse(json).data[0].message.replace(/\n/g,'<br>')
+    try {
+        return JSON.parse(json).data[0].message.replace(/\n/g, '<br>')
+    } catch (e) {
+        console.error(e)
+        return 'N/A'
+    }
 }
 
 module.exports = {
@@ -21,9 +26,9 @@ module.exports = {
     formatToday,
     mapDylanArabia
 }
-const weekdays = ['sunnuntai', 'maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai'].map(x=>x.toUpperCase())
+const weekdays = ['sunnuntai', 'maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai'].map(x => x.toUpperCase())
 const matchWeekday = new RegExp(`(${weekdays.join('|')})`, 'g')
-const separateWeekDays = (strs, currentDate)=> {
+const separateWeekDays = (strs, currentDate) => {
     const currentMidnight = toMidnight(currentDate)
     return strs.reduce((days, line) => {
         if(line.match(matchWeekday))
@@ -33,16 +38,16 @@ const separateWeekDays = (strs, currentDate)=> {
         return days
     }, [])
         .filter(({date}) => date >= currentMidnight)
-        .sort((a,b) => a.date > b.date)
+        .sort((a, b) => a.date > b.date)
         .map(({date, markup}) => markup.join('<br>\n'))
         .join('<br>\n')
 }
 const stripTags = str => str.replace(/<[^>]+>/g, 'DIVIDER').split('DIVIDER')
-    .map(x => x.replace(/&nbsp;/g, '')).filter(x=>x.trim().length)
+    .map(x => x.replace(/&nbsp;/g, '')).filter(x => x.trim().length)
 
 const strToDate = str => {
     const dmy = str.split('.')
-    return new Date(+dmy[2], (+dmy[1]-1), +dmy[0])
+    return new Date(+dmy[2], (+dmy[1] - 1), +dmy[0])
 }
 
 const toMidnight = date => {
