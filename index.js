@@ -1,4 +1,5 @@
 const http = require('http')
+const https = require('https')
 const url = require('url')
 const fs = require('fs')
 const path = require('path')
@@ -8,6 +9,8 @@ const startMsg = '\033[33mServer started in \033[36mhttp://localhost:' + port + 
 const startedTime = new Date().toString()
 const koskenrantaUrl = 'http://koskenranta.net/fi/ravintola/lounas/'
 const kahvitupaUrl = 'http://kahvitupa.net/index.php?p=1_3'
+const dylanArabiaApiUrl = 'https://graph.facebook.com/v2.8/DylanArabia/feed?access_token=' + process.env.FACEBOOK_API_TOKEN
+const dylanArabiaUrl = 'https://www.facebook.com/DylanArabia'
 console.time(startMsg)
 http.createServer((req, res) => {
     const uri = url.parse(req.url).pathname
@@ -21,9 +24,9 @@ http.createServer((req, res) => {
 }).listen(port, () => console.timeEnd(startMsg))
 
 const serveStatic = (uri, res) => {
-    var fsPath = __dirname + path.normalize(uri)
+    const fsPath = __dirname + path.normalize(uri)
     res.writeHead(200)
-    var fileStream = fs.createReadStream(fsPath)
+    const fileStream = fs.createReadStream(fsPath)
     fileStream.pipe(res)
     fileStream.on('error', () => {
         res.writeHead(404)
@@ -37,10 +40,12 @@ const writePage = res => {
     res.write(head)
     combineTemplate({
         koskenranta: koskenrantaUrl,
-        kahvitupa:   kahvitupaUrl
-    }, ({kahvitupa, koskenranta}) => {
+        kahvitupa:   kahvitupaUrl,
+        dylanArabia: dylanArabiaApiUrl
+    }, ({kahvitupa, koskenranta, dylanArabia}) => {
         res.end(`${section('Kahvitupa', kahvitupaUrl, parser.mapKahvitupa(kahvitupa))}
         ${section('Koskenranta', koskenrantaUrl, parser.mapKoskenranta(koskenranta, new Date()))}
+        ${section('Dylan Arabia', dylanArabiaUrl, parser.mapDylanArabia(dylanArabia, new Date()))}
         ${gaCode}
         <p class="subtitle">
         <i><a href="https://github.com/eeroan/kotilounas">Lähdekoodi</a></i>
@@ -61,15 +66,15 @@ const combineTemplate = (urls, cb) => {
     }))
 }
 
-var responses = {}
+const responses = {}
 const getCached = (url, cb) => {
-    if(url in responses) cb(responses[url]) 
+    if(url in responses) cb(responses[url])
     else get(url, data => {
         responses[url] = data
         cb(data)
     })
 }
-const get = (url, cb) => http.get(url, res => {
+const get = (url, cb) => (url.startsWith('https') ? https : http).get(url, res => {
     const chunks = []
     res.setEncoding('utf8')
     res.on('data', chunk => chunks.push(chunk))

@@ -7,13 +7,19 @@ const mapKahvitupa = str => stripTags(str.replace(/[\n\r]+/g, '')
     .replace(/<p>&nbsp;<\/p>/g, '')).join('<br>\n')
 
 const formatToday = () => {
-    var today = new Date()
+    const today = new Date()
     return `${weekdays[today.getDay()]} ${today.getDate()}.${today.getMonth()+1}`
 }
+
+const mapDylanArabia = json => {
+    return JSON.parse(json).data[0].message.replace(/\n/g,'<br>')
+}
+
 module.exports = {
     mapKoskenranta,
     mapKahvitupa,
-    formatToday
+    formatToday,
+    mapDylanArabia
 }
 const weekdays = ['sunnuntai', 'maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai'].map(x=>x.toUpperCase())
 const matchWeekday = new RegExp(`(${weekdays.join('|')})`, 'g')
