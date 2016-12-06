@@ -9,7 +9,6 @@ const startMsg = '\033[33mServer started in \033[36mhttp://localhost:' + port + 
 const startedTime = new Date().toString()
 const koskenrantaUrl = 'http://koskenranta.net/fi/ravintola/lounas/'
 const kahvitupaUrl = 'http://kahvitupa.net/index.php?p=1_3'
-const dylanArabiaApiUrl = 'https://graph.facebook.com/v2.8/DylanArabia/posts?limit=1&access_token=' + process.env.FACEBOOK_API_TOKEN
 const dylanArabiaUrl = 'https://www.facebook.com/DylanArabia'
 console.time(startMsg)
 http.createServer((req, res) => {
@@ -41,7 +40,7 @@ const writePage = res => {
     combineTemplate({
         koskenranta: koskenrantaUrl,
         kahvitupa:   kahvitupaUrl,
-        dylanArabia: dylanArabiaApiUrl
+        dylanArabia: dylanArabiaUrl
     }, ({kahvitupa, koskenranta, dylanArabia}) => {
         res.end(`<article>
         ${section('Kahvitupa', kahvitupaUrl, parser.mapKahvitupa(kahvitupa))}
@@ -76,12 +75,25 @@ const getCached = (url, cb) => {
         cb(data)
     })
 }
-const get = (url, cb) => (url.startsWith('https') ? https : http).get(url, res => {
-    const chunks = []
-    res.setEncoding('utf8')
-    res.on('data', chunk => chunks.push(chunk))
-    res.on('end', () => cb(chunks.join('')))
-})
+const get = (uri, cb) => {
+    let parsed = url.parse(uri)
+    const options = {
+        hostname: parsed.hostname,
+        path:     parsed.path,
+        query:    parsed.query,
+        headers:  {
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36'
+        }
+    }
+    const cbFunc = res => {
+        const chunks = []
+        res.setEncoding('utf8')
+        res.on('data', chunk => chunks.push(chunk))
+        res.on('end', () => cb(chunks.join('')))
+    }
+    if(uri.startsWith('https')) https.get(options, cbFunc)
+    else http.get(options, cbFunc)
+}
 
 const head = `<html>
 <head>

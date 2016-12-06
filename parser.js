@@ -11,9 +11,9 @@ const formatToday = () => {
     return `${weekdays[today.getDay()]} ${today.getDate()}.${today.getMonth() + 1}`
 }
 
-const mapDylanArabia = json => {
+const mapDylanArabia = html => {
     try {
-        return JSON.parse(json).data[0].message.replace(/\n/g, '<br>')
+        return html.split('<p>').slice(1).join('\n').split('</div>')[0]
     } catch (e) {
         console.error(e)
         return 'N/A'
