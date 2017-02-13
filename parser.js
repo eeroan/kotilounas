@@ -13,7 +13,7 @@ const formatToday = () => {
 
 const mapDylanArabia = html => {
     try {
-        return html.split('<p>').slice(1).join('\n').split('</div>')[0]
+        return html.split('<p>').slice(1).join('\n').split('</div>')[0].replace(/(\d)\s*€/g, '$1&nbsp;€')
     } catch (e) {
         console.error(e)
         return 'N/A'

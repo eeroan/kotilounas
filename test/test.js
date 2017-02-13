@@ -1,11 +1,19 @@
 const assert = require('assert')
 const {mapKahvitupa, mapKoskenranta, mapDylanArabia} = require('../parser')
-const {readFileSync} = require('fs')
+const fs = require('fs')
 
-const readFile = path => readFileSync(`${__dirname}/${path}`, {encoding: 'utf8'})
+const readFile = path => fs.readFileSync(`${__dirname}/${path}`, {encoding: 'utf8'}).trim()
+const writeErrorFiles = obj => Object.keys(obj).forEach(key => fs.writeFileSync(`${__dirname}/../output/${key}.txt`, obj[key], {encoding: 'utf8'}))
+const createDirIfMissing = dir => fs.existsSync(dir) || fs.mkdirSync(dir)
 const equal = (msg, expected, actual) => {
     console.log('- ' + msg)
-    assert.equal(expected, actual)
+    try {
+        assert.equal(expected, actual)
+    } catch(err) {
+        createDirIfMissing(`${__dirname}/../output`)
+        writeErrorFiles({expected, actual})
+        throw err
+    }
 }
 console.log('\033[33mRunning tests...\033[39m')
 
