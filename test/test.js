@@ -1,5 +1,5 @@
 const assert = require('assert')
-const {mapKahvitupa, mapKoskenranta} = require('../parser')
+const {mapKahvitupa, mapKoskenranta, mapDylanArabia} = require('../parser')
 const {readFileSync} = require('fs')
 
 const readFile = path => readFileSync(`${__dirname}/${path}`, {encoding: 'utf8'})
@@ -14,7 +14,11 @@ equal('Kahvitupa result is correct',
     readFile('expectedKahvitupa.txt')
 )
 equal('Koskenranta result is correct',
-    mapKoskenranta(readFile('koskenranta.html'), new Date(2016,6,15)),
+    mapKoskenranta(readFile('koskenranta.html'), new Date(2017, 1, 13)),
     readFile('expectedKoskenranta.txt')
+)
+equal('Dylan result is correct',
+    mapDylanArabia(readFile('dylan.html')),
+    readFile('expectedDylan.txt')
 )
 console.log('\033[32mAll tests passed!\033[39m');
